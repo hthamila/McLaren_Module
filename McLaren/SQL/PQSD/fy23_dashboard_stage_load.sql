@@ -5988,7 +5988,7 @@ from
 		0 as oe_rt_mly,
 		sum(numr) OVER (PARTITION BY fcy_num, metric_name ORDER BY date_trunc('month',rpt_dt)  ROWS BETWEEN 11 preceding and current row) as numr_r12m,
 		sum(dnmr) OVER (PARTITION BY fcy_num, metric_name ORDER BY date_trunc('month',rpt_dt)  ROWS BETWEEN 11 preceding and current row) as dnmr_r12m,
-		case when numr_r12m = 0 then 0 else (round(numr_r12m/dnmr_r12m,3)) end as num_by_dnmr_r12m,    --derived_ratio
+		case when numr_r12m = 0 OR dnmr_r12m = 0 then 0 else (round(numr_r12m/dnmr_r12m,3)) end as num_by_dnmr_r12m,    --derived_ratio
 		numr as numr_mly,
 		dnmr as dnmr_mly,
 		actual_ratio as num_by_dnmr_mly,    --actual_ratio
