@@ -70,7 +70,7 @@ FROM
 WHERE
     eaf_cf.service_date IS NOT NULL AND
     eaf_cf.service_date <= CURRENT_DATE AND
-    eaf_cf.in_or_out_patient_ind = 'O' AND
+    --eaf_cf.in_or_out_patient_ind = 'O' AND
     eaf_cf.revenue_code = '0762' AND
     eaf_cf.fcy_nm IN ('Bay', 'Caro', 'Central', 'Flint', 'Karmanos', 'Lansing', 'Lapeer', 'Macomb', 'Northern', 'Oakland', 'Port Huron', 'St. Lukes', 'Thumb')
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11
@@ -99,7 +99,7 @@ FROM
 WHERE
     eaf_cf.service_date IS NOT NULL AND
     eaf_cf.service_date <= CURRENT_DATE AND
-    eaf_cf.in_or_out_patient_ind = 'O' AND
+    --eaf_cf.in_or_out_patient_ind = 'O' AND
     eaf_cf.revenue_code = '0762' AND
     eaf_cf.fcy_nm IN ('Bay', 'Caro', 'Central', 'Flint', 'Karmanos', 'Lansing', 'Lapeer', 'Macomb', 'Northern', 'Oakland', 'Port Huron', 'St. Lukes', 'Thumb')
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11
