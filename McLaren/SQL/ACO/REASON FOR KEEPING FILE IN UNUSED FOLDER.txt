@@ -1,0 +1,2 @@
+1)Box "AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B" is not executed since 2021. Couple of it's job are Inactive state, so we have marked the sql scripts (belongs to this box) as UNUSED.
+2) For some .sql scripts we dont find the job in JIL folder.

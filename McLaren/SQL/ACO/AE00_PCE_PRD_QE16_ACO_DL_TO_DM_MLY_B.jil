@@ -1,0 +1,516 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B ----------------- */ 
+
+insert_job: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B   job_type: BOX 
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 0
+alarm_if_fail: 1
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B ----------------- */ 
+
+ insert_job: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B   job_type: BOX 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ box_success: s(AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C) & s(AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C) & s(AE00_DOP_PRD_QE16_MILLIMAN_BATCH_OPEN_MLY_C) & s(AE00_PCE_PRD_QE16_ACO_DT_META_UPD_C) & s(AE00_PCE_PRD_QE16_ACO_NZ_RECREATE_VIEWS)
+ term_run_time: 90
+ alarm_if_fail: 1
+
+
+  /* ----------------- AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C ----------------- */ 
+
+  insert_job: AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C   job_type: CMD 
+  box_name: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B
+  command: /export/home/dsadm/common/scripts/UpdateEndProcess.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r MILLIMAN
+  machine: h3puprmrdseng11
+  owner: dsadm@h3puprmrdseng11
+  permission: gx,wx
+  date_conditions: 0
+  std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C.`date +'%Y%d%m_%s'`.out"
+  std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C.`date +'%Y%d%m_%s'`.err"
+  alarm_if_fail: 1
+  profile: "/export/home/dsadm/.profile"
+
+
+  /* ----------------- AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C ----------------- */ 
+
+  insert_job: AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C   job_type: CMD 
+  box_name: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B
+  command: /ds_data1/DI_PCE_PROD/sql/QE16/pce_lake_tbl_vldtn.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r MILLIMAN
+  machine: h3puprmrdseng11
+  owner: dsadm@h3puprmrdseng11
+  permission: gx,wx
+  date_conditions: 0
+  condition: s(AE00_DOP_PRD_QE16_MILLIMAN_PRIOR_BATCH_CLOSE_MLY_C)
+  std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C.`date +'%Y%d%m_%s'`.out"
+  std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C.`date +'%Y%d%m_%s'`.err"
+  alarm_if_fail: 1
+  profile: "/export/home/dsadm/.profile"
+
+
+  /* ----------------- AE00_DOP_PRD_QE16_MILLIMAN_BATCH_OPEN_MLY_C ----------------- */ 
+
+  insert_job: AE00_DOP_PRD_QE16_MILLIMAN_BATCH_OPEN_MLY_C   job_type: CMD 
+  box_name: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B
+  command: /export/home/dsadm/common/scripts/ValidateStartProcess.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r MILLIMAN
+  machine: h3puprmrdseng11
+  owner: dsadm@h3puprmrdseng11
+  permission: gx,wx
+  date_conditions: 0
+  condition: s(AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C)
+  std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_BATCH_OPEN_MLY_C.`date +'%Y%d%m_%s'`.out"
+  std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_MILLIMAN_BATCH_OPEN_MLY_C.`date +'%Y%d%m_%s'`.err"
+  alarm_if_fail: 1
+  profile: "/export/home/dsadm/.profile"
+
+
+  /* ----------------- AE00_PCE_PRD_QE16_ACO_DT_META_UPD_C ----------------- */ 
+
+  insert_job: AE00_PCE_PRD_QE16_ACO_DT_META_UPD_C   job_type: CMD 
+  box_name: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B
+  command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/dt_meta.sql
+  machine: h3puprmrdseng11
+  owner: dsadm@h3puprmrdseng11
+  permission: gx,ge
+  date_conditions: 0
+  condition: s(AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C)
+  std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_DT_META_UPD_C.`date +'%Y%d%m_%s'`.out"
+  std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_DT_META_UPD_C.`date +'%Y%d%m_%s'`.err"
+  alarm_if_fail: 1
+  profile: "/export/home/dsadm/.profile"
+
+
+  /* ----------------- AE00_PCE_PRD_QE16_ACO_NZ_RECREATE_VIEWS ----------------- */ 
+
+  insert_job: AE00_PCE_PRD_QE16_ACO_NZ_RECREATE_VIEWS   job_type: CMD 
+  box_name: AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B
+  command: /export/home/dsadm/common/scripts/pce_views.sql -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_lnd
+  machine: h3puprmrdseng11
+  owner: dsadm@h3puprmrdseng11
+  permission: gx,ge
+  date_conditions: 0
+  condition: s(AE00_DOP_PRD_QE16_MILLIMAN_BATCH_VLDTN_MLY_C)
+  std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_NZ_RECREATE_VIEWS.`date +'%Y%d%m_%s'`.out"
+  std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_NZ_RECREATE_VIEWS.`date +'%Y%d%m_%s'`.err"
+  alarm_if_fail: 1
+  profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CCN_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CCN_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/milliman_ccn_dim.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CCN_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CCN_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/clm_line_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CLM_DGNS_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CLM_DGNS_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/clm_dgns_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_DGNS_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_DGNS_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CLM_PCD_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CLM_PCD_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/clm_pcd_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CLM_DGNS_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_PCD_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_PCD_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_IN_NTW_PVDR_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_IN_NTW_PVDR_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/in_ntw_pvdr_dim.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_IN_NTW_PVDR_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_IN_NTW_PVDR_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_MPP_NTW_PVDR_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_MPP_NTW_PVDR_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/mpp_ntw_pvdr_dim.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_IN_NTW_PVDR_DIM)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_MPP_NTW_PVDR_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_MPP_NTW_PVDR_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_BENE_HCC_SCR_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_BENE_HCC_SCR_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pce_int_load_hcc_scr.ksh
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENE_HCC_SCR_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENE_HCC_SCR_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_PLN_MBR_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_PLN_MBR_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/pln_mbr_dim.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_BENE_HCC_SCR_DIM)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PLN_MBR_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PLN_MBR_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_PLN_MBR_ASGNT_DIM ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_PLN_MBR_ASGNT_DIM   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/pln_mbr_asgnt_dim.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_PLN_MBR_DIM)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PLN_MBR_ASGNT_DIM.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PLN_MBR_ASGNT_DIM.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/ambul_snsv_cdtn_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CLM_PCD_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_AVDBL_IP_VST_PQI_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_AVDBL_IP_VST_PQI_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/avdbl_ip_vst_pqi_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_AVDBL_IP_VST_PQI_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_AVDBL_IP_VST_PQI_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_BENE_PCP_ATTR ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_BENE_PCP_ATTR   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pcp_attrb_algr.ksh
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_PLN_MBR_ASGNT_DIM) & s(AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENE_PCP_ATTR.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENE_PCP_ATTR.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_END_OF_LIFE_UTLZ_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_END_OF_LIFE_UTLZ_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/end_of_life_utlz_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_AMBUL_SNSV_CDTN_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_END_OF_LIFE_UTLZ_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_END_OF_LIFE_UTLZ_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/ip_clm_readm_anl_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_END_OF_LIFE_UTLZ_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_SNF_CLM_READM_ANL_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_SNF_CLM_READM_ANL_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/snf_clm_readm_anl_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_CLM_READM_ANL_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_CLM_READM_ANL_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/post_dschrg_vst_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_IP_CLM_READM_ANL_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_POST_DRG_CARE_SVC_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_POST_DRG_CARE_SVC_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/post_drg_care_svc_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_POST_DRG_CARE_SVC_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_POST_DRG_CARE_SVC_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_SNF_IP_READM_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_SNF_IP_READM_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/snf_ip_readm_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_POST_DSCHRG_VST_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_IP_READM_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_IP_READM_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_PVDR_CASE_ATTR ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_PVDR_CASE_ATTR   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/pvdr_case_attr.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_SNF_IP_READM_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PVDR_CASE_ATTR.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_PVDR_CASE_ATTR.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pce_int_load_clm_ds.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/clm_line_fct_ds.sql -l S
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_PVDR_CASE_ATTR)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_BENF_HCC_DTL_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_BENF_HCC_DTL_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pce_int_load_outclaims_diag.ksh /ds_data1/DI_PCE_PROD/sql/QE16/ACO/outclaims_diag.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENF_HCC_DTL_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BENF_HCC_DTL_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_BPCI_PAC_SPCLY_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_BPCI_PAC_SPCLY_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/bpci_epsd_pac_spcly_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CLM_LINE_FCT_DS)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BPCI_PAC_SPCLY_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_BPCI_PAC_SPCLY_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_CCW_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_CCW_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/ccw_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_BPCI_PAC_SPCLY_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CCW_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_CCW_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_RELOAD_ACO_CLM_LINE_FCT_DS ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_RELOAD_ACO_CLM_LINE_FCT_DS   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pce_int_load_clm_ds.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_dm -c QE16 -f ACO/clm_line_fct_ds.sql -l R
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CCW_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_RELOAD_ACO_CLM_LINE_FCT_DS.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_RELOAD_ACO_CLM_LINE_FCT_DS.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_HIST_BENE_AGGR_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_HIST_BENE_AGGR_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/ACO/pce_int_load_aggr_fct.ksh /ds_data1/DI_PCE_PROD/sql/QE16/ACO/hist_bene_aggr_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_ACO_CCW_FCT)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_HIST_BENE_AGGR_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_HIST_BENE_AGGR_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_ACO_SNF_OUTCLAIMS ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_ACO_SNF_OUTCLAIMS   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_ACO_DL_TO_DM_MLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_aco_prd_lnd -c QE16 -f ACO/snf_outclaims.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ACO_BATCH_TRIGGER_MLY_B)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_OUTCLAIMS.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_ACO_SNF_OUTCLAIMS.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"

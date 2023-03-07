@@ -1,0 +1,16 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_NHSN_CDR_MLY_C ----------------- */ 
+
+update_job: AE00_PCE_PRD_QE16_NHSN_CDR_MLY_C   job_type: CMD 
+command: /export/home/dsadm/common/scripts/nhsn_cdr.ksh
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+run_calendar: 2nd_of_month
+start_times: "08:00"
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_NHSN_CDR_MLY_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_NHSN_CDR_MLY_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"

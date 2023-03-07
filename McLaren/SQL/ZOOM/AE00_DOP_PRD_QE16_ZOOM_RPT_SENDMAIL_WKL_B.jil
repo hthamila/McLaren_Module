@@ -1,0 +1,28 @@
+/* ----------------- AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WKL_B ----------------- */
+
+update_job: AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WKL_B   job_type: BOX
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: tu
+start_times: "07:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WLY_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WKL_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/mlhreport.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_oper_prd_zoom -f mlh_dly_rpt.sql -o McLaren_Weekly_Report.csv
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WLY_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_RPT_SENDMAIL_WLY_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+

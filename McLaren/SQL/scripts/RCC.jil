@@ -1,0 +1,13 @@
+/* ----------------- AE00_PCE_PRD_QE16_RCC_CST_MAIN_BOX_MTHLY ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_RCC_CST_MAIN_BOX_MTHLY   job_type: BOX
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+run_calendar: 1stand15th_of_month
+start_times: "22:05"
+condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B)
+box_success: s(AE00_PCE_PRD_QE16_RCC_CST_MTHLY_C) & s(AE00_PCE_PRD_QE16_RCC_CST_SUCCESS_NOTIFY)
+box_failure: f(AE00_PCE_PRD_QE16_RCC_CST_MTHLY_C) | s(AE00_PCE_PRD_QE16_RCC_CST_FAIL_NOTIFY)
+alarm_if_fail: 1
+alarm_if_terminated: 1

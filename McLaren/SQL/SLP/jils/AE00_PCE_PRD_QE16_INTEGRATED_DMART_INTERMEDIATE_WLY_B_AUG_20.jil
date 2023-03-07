@@ -1,0 +1,78 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B ----------------- */ 
+
+insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B   job_type: BOX 
+owner: dsadm@h3pudseng2
+permission: gx,ge
+date_conditions: 1
+days_of_week: tu
+start_times: "07:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B)
+box_success: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_INTERMEDIATE_WLY_C)
+box_failure: f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C)
+alarm_if_fail: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "STARTED\:McLaren INTEGRATED DATAMART REFRESH (INTERMEDIATE)" -e "ravi_pola@premierinc.com Suneetha_Kolluri@PremierInc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3pudseng2
+ owner: dsadm@h3pudseng2
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -c QE16 -f SLP/QE16_INTEGRATED_dmart_intermediate.sql
+ machine: h3pudseng2
+ owner: dsadm@h3pudseng2
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_INTERMEDIATE_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_INTERMEDIATE_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:McLaren INTEGRATED DATAMART REFRESH (INTERMEDIATE)" -e "gokula_devarajan@premierinc.com ravi_pola@premierinc.com Suneetha_Kolluri@PremierInc.com Mansoor_Mirza@PremierInc.com"
+ machine: h3pudseng2
+ owner: dsadm@h3pudseng2
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_INTERMEDIATE_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_INTERMEDIATE_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren INTEGRATED DATAMART REFRESH" -e "ravi_pola@premierinc.com Suneetha_Kolluri@PremierInc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3pudseng2
+ owner: dsadm@h3pudseng2
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_INTERMEDIATE_WLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+

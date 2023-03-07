@@ -1,0 +1,11 @@
+DROP TABLE pce_qe16_slp_prd_dm..encntr_cnslt_pract_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..chrg_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..chrg_cost_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..net_rvu_model_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..hist_pymt_ratio_drg_wghts_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..hist_pymt_ratio_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..encntr_qly_anl_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..svc_ln_anl_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..encntr_pract_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..encntr_net_rvu_fct_prev_0215;
+DROP TABLE pce_qe16_slp_prd_dm..encntr_pcd_fct_prev_0215;

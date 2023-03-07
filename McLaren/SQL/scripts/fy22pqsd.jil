@@ -1,0 +1,98 @@
+/* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B ----------------- */
+
+update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B   job_type: BOX
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: mo
+start_times: "22:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B)
+box_success: s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SUCCESS_ADHOC_C) & s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C) & s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C) & s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C)
+box_failure: (f(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C) | f(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C)) & s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_FAIL_ADHOC_C)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C   job_type: CMD
+ box_name: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/fy22_dashboard_stage_load.sql -u prmretlp
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ description: "PQSD Data refresh JOB (Staging Tables)"
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C   job_type: CMD
+ box_name: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/fy22_dashboard_stage_swap.sql -u prmretlp
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C)
+ description: "PQSD Data refresh JOB (Staging Tables to Target Tables)"
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C   job_type: CMD
+ box_name: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "STARTED\:McLaren PQSD STG DATAMART REFRESH" -e "Dharmeswaran_Paramasivam@PremierInc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SUCCESS_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SUCCESS_ADHOC_C   job_type: CMD
+ box_name: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:McLaren PQSD STG DATAMART REFRESH" -e "Dharmeswaran_Paramasivam@PremierInc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DMART_SUCCESS_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DMART_SUCCESS_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_STG_QE16_PQSD_DATAREFRESH_FAIL_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_FAIL_ADHOC_C   job_type: CMD
+ box_name: AE00_PCE_STG_QE16_PQSD_DATAREFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren PQSD STG DATAMART REFRESH" -e "Dharmeswaran_Paramasivam@PremierInc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_NOTIFY_ADHOC_C) | f(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_REFRESH_ADHOC_C) | f(AE00_PCE_STG_QE16_PQSD_DATAREFRESH_SWAP_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DMART_FAIL_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_STG_QE16_PQSD_DMART_FAIL_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1

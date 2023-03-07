@@ -1,0 +1,65 @@
+
+
+/* ----------------- AE00_PCE_PROD_QE16_INTEGRATED_DMART_DLY_B ----------------- */ 
+
+insert_job: AE00_PCE_PROD_QE16_INTEGRATED_DMART_DLY_B   job_type: BOX 
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: all
+start_times: "22:00"
+condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B)
+box_success: s(AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C) & s(AE00_PCE_PROD_QE16_INTEGRATED_DMART_SUCCESS_NOTIFY)
+box_failure: f(AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C) | s(AE00_PCE_PROD_QE16_INTEGRATED_DMART_FAIL_NOTIFY)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PROD_QE16_INTEGRATED_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -c QE16 -f SLP/QE16_INTEGRATED_dmart_old_ddl.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PROD_QE16_INTEGRATED_DMART_SUCCESS_NOTIFY ----------------- */ 
+
+ insert_job: AE00_PCE_PROD_QE16_INTEGRATED_DMART_SUCCESS_NOTIFY   job_type: CMD 
+ box_name: AE00_PCE_PROD_QE16_INTEGRATED_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "PROD - SUCCESS\:McLaren INTEGRATED DATAMART (PROD Tables) REFRESH" -e "PCE_PROD_SUPPORT@premierinc.com mansoor_mirza@premierinc.com ApplicationOperationCenter@premierinc.com PCE_BI_TABLEAU@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_SUCCESS_NOTIFY.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_SUCCESS_NOTIFY.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PROD_QE16_INTEGRATED_DMART_FAIL_NOTIFY ----------------- */ 
+
+ insert_job: AE00_PCE_PROD_QE16_INTEGRATED_DMART_FAIL_NOTIFY   job_type: CMD 
+ box_name: AE00_PCE_PROD_QE16_INTEGRATED_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "PROD - FAILED\:McLaren INTEGRATED DATAMART (PROD Tables) REFRESH" -e "PCE_PROD_SUPPORT@premierinc.com mansoor_mirza@premierinc.com ApplicationOperationCenter@premierinc.com PCE_BI_TABLEAU@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_PCE_PROD_QE16_INTEGRATED_DMART_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_FAIL_NOTIFY.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PROD_QE16_INTEGRATED_DMART_FAIL_NOTIFY.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1

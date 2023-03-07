@@ -1,0 +1,133 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B ----------------- */ 
+
+insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B   job_type: BOX 
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: all
+start_times: "20:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B)
+box_success: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SUCCESS_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C)
+box_failure: f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "STARTED\:McLaren INTEGRATED STAGE DATAMART REFRESH" -e "ravi_pola@premierinc.com Shivaram_Gannamani@PremierInc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f SLP/QE16_INTEGRATED_dmart_stg_db.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f SLP/QE16_INTEGRATED_dmart_oncology_stg_db.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SUCCESS_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SUCCESS_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:McLaren INTEGRATED STAGE DATAMART REFRESH" -e "Shivaram_Gannamani@premierinc.com  gokula_devarajan@premierinc.com ravi_pola@premierinc.com Mansoor_Mirza@PremierInc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SUCCESS_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SUCCESS_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_FAIL_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_FAIL_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren INTEGRATED STAGE DATAMART REFRESH" -e "Shivaram_Gannamani@premierinc.com ravi_pola@premierinc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_NOTIFY_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_FAIL_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_FAIL_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: nzsql -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -e -f /ds_data1/DI_PCE_PROD/sql/QE16/SLP/QE16_ZOOM_SLP_Validation.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_ONCOLOGY_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_SLP_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_DLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/SLP/QE16_INTEGRATED_cost_load_stg_db.ksh
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_REFRESH_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_STAGE_DMART_COST_REVNUE_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1

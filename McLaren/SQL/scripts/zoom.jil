@@ -1,0 +1,177 @@
+/* ----------------- AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B ----------------- */
+
+update_job: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B   job_type: BOX
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: all
+start_times: "17:30"
+box_success: s(AE00_DOP_PRD_QE16_ZOOM_INST_BILL_FW) & s(AE00_DOP_PRD_QE16_ZOOM_CERNER_FW) & s(AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY) & s(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C) & s(AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_CV_PATDISCH_C) & s(AE00_DOP_PRD_QE16_CERNER_PATBILL_LOAD_DLY_C) & s(AE00_DOP_PRD_QE16_CERNER_POST_VALIDATION_DLY_C) & s(AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C)
+term_run_time: 120
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+ /* ----------------- AE00_DOP_PRD_QE16_ZOOM_INST_BILL_FW ----------------- */
+
+ insert_job: AE00_DOP_PRD_QE16_ZOOM_INST_BILL_FW   job_type: FW
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ term_run_time: 120
+ job_terminator: 1
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ watch_file: "/share/qe16/etl/to_premier/from_pulse/triggers/InstBill/MCLAREN_HEALTH_INST_BILL_PROD_BATCH_COMPLETED_*"
+ watch_interval: 30
+
+ 
+  /* ----------------- AE00_DOP_PRD_QE16_ZOOM_CERNER_FW ----------------- */
+
+ insert_job: AE00_DOP_PRD_QE16_ZOOM_CERNER_FW   job_type: FW
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ term_run_time: 120
+ job_terminator: 1
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ watch_file: "/share/qe16/etl/to_premier/from_pulse/triggers/Cerner/MCLAREN_HEALTH_CERNER_PROD_BATCH_COMPLETED_*"
+ watch_interval: 30
+ 
+ /* ----------------- AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY ----------------- */
+ 
+ insert_job: AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "PROD - STARTED\:McLaren - ZOOM PROCESS STARTED" -e "PCE_PROD_SUPPORT@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ZOOM_INST_BILL_FW) & s(AE00_DOP_PRD_QE16_ZOOM_CERNER_FW)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ 
+
+ /* ----------------- AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/pce_lake_tbl_vldtn.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r INST_BILL
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/pce_lake_tbl_vldtn.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r CERNER
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+ /* ----------------- AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C ----------------- */
+
+ insert_job: AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/pce_lake_tbl_vldtn.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r STLUKES
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ 
+ /* ----------------- AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_inst_bill_prd_lnd -c QE16 -f ZOOM/patdisch_brth_wght_upd.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: nzsql -h pzpceqe16 -u qe16zmp -d pce_qe16_oper_prd_zoom -f /ds_data1/DI_PCE_PROD/sql/QE16/ZOOM/qe16_execute_zoom_procedures.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C) & s(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ 
+  /* ----------------- AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C ----------------- */
+
+ insert_job: AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/scripts/mclarenLandingCheck.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_prd_utl -c MCLAREN_HEALTH -p LANDING_UPDATE
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_CERNER_POST_VALIDATION_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+ 
+ 
+  /* ----------------- AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_FAIL_DLY_C ----------------- */
+
+ update_job: AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_FAIL_DLY_C   job_type: CMD
+ box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren INST_BILL ZOOM DATALOADS FAILED" -e "PCE_PROD_SUPPORT@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_DOP_PRD_QE16_ZOOM_INST_BILL_FW) | f(AE00_DOP_PRD_QE16_ZOOM_CERNER_FW) | f(AE00_DOP_PRD_QE16_ZOOM_START_NOTIFY) | f(AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_DLY_C) | f(AE00_DOP_PRD_QE16_INST_BILL_CV_PATDISCH_C) | f(AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C) | f(AE00_DOP_PRD_QE16_CERNER_POST_VALIDATION_DLY_C) | f(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C) | f(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C) | f(AE00_DOP_PRD_QE16_STLUKES_BATCH_VLDTN_DLY_C) | f(AE00_DOP_PRD_QE16_ZOOM_UTL_UPDATE_DLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_FAIL_DLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_ZOOM_DATALOAD_FAIL_DLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1

@@ -1,0 +1,133 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B ----------------- */ 
+
+insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B   job_type: BOX 
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: all
+start_times: "18:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B)
+box_success: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C)
+box_failure: f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT) | f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "STARTED\:McLaren INTEGRATED DATAMART REFRESH" -e "ravi_pola@premierinc.com Srujan_Kade@PremierInc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -c QE16 -f SLP/QE16_INTEGRATED_dmart.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:McLaren INTEGRATED DATAMART REFRESH" -e "gokula_devarajan@premierinc.com ravi_pola@premierinc.com Mansoor_Mirza@PremierInc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SUCCESS_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren INTEGRATED DATAMART REFRESH" -e "ravi_pola@premierinc.com Mansoor_Mirza@PremierInc.com gokula_devarajan@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C) | f(AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT) | f(AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_FAIL_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: nzsql -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -e -f /ds_data1/DI_PCE_PROD/sql/QE16/SLP/QE16_ZOOM_SLP_Validation.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_SLP_VLDTN_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/SLP/QE16_INTEGRATED_cost_load.ksh
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_ENCNTR_CST_ANL_FCT.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+
+ /* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C ----------------- */ 
+
+ insert_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C   job_type: CMD 
+ box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -c QE16 -f SLP/QE16_INTEGRATED_dmart_oncology.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_NOTIFY_WLY_C) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_ONCOLOGY_REFRESH_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1

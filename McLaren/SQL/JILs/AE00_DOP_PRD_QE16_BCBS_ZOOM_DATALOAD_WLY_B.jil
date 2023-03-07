@@ -1,0 +1,76 @@
+
+
+/* ----------------- AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B ----------------- */ 
+
+update_job: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B   job_type: BOX 
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: mo
+start_times: "04:00"
+box_success: s(AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C) & s(AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C) & s(AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_SUCCESS_WLY_C)
+term_run_time: 90
+alarm_if_fail: 1
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C ----------------- */ 
+
+ update_job: AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C   job_type: CMD 
+ box_name: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B
+ command: /ds_data1/DI_PCE_PROD/sql/QE16/pce_lake_tbl_vldtn.ksh -h pzpceqe16 -s pce_qe16_prd_utl -u prmretlp -c MCLAREN_HEALTH -r BCBS
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C ----------------- */ 
+
+ update_job: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C   job_type: CMD 
+ box_name: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B
+ command: nzsql -h pzpceqe16 -u prmretlp -d pce_qe16_bcbs_prd_zoom -f /ds_data1/DI_PCE_PROD/sql/QE16/qe16_bcbs_execute_zoom_procedure.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,wx
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C.`date +'%Y%d%m_%s'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_SUCCESS_WLY_C ----------------- */ 
+
+ update_job: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_SUCCESS_WLY_C   job_type: CMD 
+ box_name: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:MCLAREN BCBS ZOOM DATA LOADS SUCCESS" -e "PCE_PROD_SUPPORT@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_SUCCESS_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_SUCCESS_WLY_C.`date +'%Y%d%m_%s'`.out"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+
+ /* ----------------- AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_FAIL_WLY_C ----------------- */ 
+
+ update_job: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_FAIL_WLY_C   job_type: CMD 
+ box_name: AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_B
+ command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:MCLAREN BCBS ZOOM DATA LOADS FAILED" -e "PCE_PROD_SUPPORT@premierinc.com"
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: f(AE00_DOP_PRD_QE16_BCBS_BATCH_VLDTN_WLY_C) | f(AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_WLY_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_FAIL_WLY_C.`date +'%Y%d%m_%s'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_BCBS_ZOOM_DATALOAD_FAIL_WLY_C.`date +'%Y%d%m_%s'`.out"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"

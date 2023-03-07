@@ -1,0 +1,17 @@
+
+
+/* ----------------- AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C ----------------- */ 
+
+update_job: AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C   job_type: CMD 
+box_name: AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B
+command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_inst_bill_prd_lnd -c QE16 -f ZOOM/patdisch_brth_wght_upd.sql
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,wx
+date_conditions: 0
+condition: s(AE00_DOP_PRD_QE16_CERNER_BATCH_VLDTN_DLY_C) & s(AE00_DOP_PRD_QE16_INST_BILL_BATCH_VLDTN_DLY_C)
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_DOP_PRD_QE16_INST_BILL_PATDISCH_UPD_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
+alarm_if_terminated: 1

@@ -1,0 +1,517 @@
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B job_type: BOX
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 1
+days_of_week: mo
+start_times: "21:00"
+condition: s(AE00_DOP_PRD_QE16_ZOOM_DATALOAD_DLY_B) & s(AE00_PCE_PRD_QE16_INTEGRATED_DMART_WLY_B)
+box_success: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SUCCESS_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C)
+box_failure: (f(AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_C) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C)) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_FAIL_ADHOC_C)
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B   job_type: BOX
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ box_success: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C) & s(AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C)
+ box_failure: f(AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C ) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C )
+ alarm_if_fail: 1
+ alarm_if_terminated: 1
+
+ /* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/00_01_1_independent_queries.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/00_02_2_lab_utilization.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/00_03_5_complication_index.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/01_00_3_qa_attributes.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_INDEP_QRYS_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAP_UTIL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_COMP_ATTR_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/02_00_4_stage_encounter_qs_analysis_fact_view.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_QA_ATTR_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/03_00_6_nhsn_msr_fct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_STG_ENCNTR_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/03_01_7_hac_and_psi_zero_events_and_harm_events.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_NHSN_MSR_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/03_02_8_harm_events.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/03_03_9_zero_events.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PSI_ZERO_EVNTS_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_01_10_mortality_index_w_covid_and_wo_covid.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_HARM_EVNTS_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_ZERO_EVNTS_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_02_11_sepsis_mortality_index.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_03_12_readmission_index_w_covid_and_wo_covid.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_04_13_lab_utilization_w_covid_and_wo_covid.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_05_14_sepsis_bundle_compliance.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_06_15_ob_training.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_07_16_patient_experience_percentile_composite.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MORT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_08_17_mmg_overall_patient_experience.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_09_18_aco_mpp_measure.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_10_19_cardiac_rehab.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_11_20_pci_radial_access.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_12_21_conventional_breast_cancer_irradiation_awbi.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_MORTINDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REDMSN_CVD_INDX_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_LAB_UTLSN_CVD_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SPS_BNDL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_OB_TRAIN_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_PERCEN_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/04_13_22_outpatient_oncology_likelihood_to_recommend_ptnt_exrnc_pct.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PTNT_EXP_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MPP_MSR_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CRDC_REHAB_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_PCI_RADIL_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CNCR_IRRAD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/05_01_23_clinical_outcome_score_fact.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/05_02_24_clinical_outcome_score_fact_wo_covid.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_RCMND_PTNT_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/06_01_25_month_over_month_tables.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_ADHOC_C)& s(AE00_PCE_PRD_QE16_PQSD_DATAREF_CLNCL_SCR_FACT_CVD_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/07_01_26_oncology_clinical_outcome_score_fact_wo_covid.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_MNTH_OVER_MNTH_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+ alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C ----------------- */
+
+ update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C job_type: CMD
+ box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B
+ command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_stg -c QE16 -f PQSD/08_01_27_drop_statement_for_temp_tables.sql
+ machine: h3puprmrdseng11
+ owner: dsadm@h3puprmrdseng11
+ permission: gx,ge
+ date_conditions: 0
+ condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_ONCLGY_SCR_FCT_ADHOC_C)
+ std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.out"
+ std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_DRP_TEMP_ADHOC_C.`date +'%Y%d%m_%H%M%S'`.err"
+ alarm_if_fail: 1
+ profile: "/export/home/dsadm/.profile"
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C job_type: CMD
+box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B
+command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_prd -c QE16 -f PQSD/fy21_dashboard_stage_swap.sql -u prmretlp
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,wx
+date_conditions: 0
+condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B)
+description: "PQSD Data refresh JOB (Staging Tables to Target Tables)"
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
+alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C job_type: CMD
+box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B
+command: /export/home/dsadm/common/scripts/SendMail.ksh -s "STARTED\:McLaren PQSD DATAMART REFRESH" -e "PCE_PROD_SUPPORT@premierinc.com _194348@premierinc.com"
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 0
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
+alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_SUCCESS_ADHOC_C ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_SUCCESS_ADHOC_C job_type: CMD
+box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B
+command: /export/home/dsadm/common/scripts/SendMail.ksh -s "SUCCESS\:McLaren PQSD DATAMART REFRESH" -e "PCE_PROD_SUPPORT@premierinc.com _194348@premierinc.com"
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 0
+condition: s(AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C)
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DMART_SUCCESS_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DMART_SUCCESS_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
+alarm_if_terminated: 1
+
+/* ----------------- AE00_PCE_PRD_QE16_PQSD_DATAREF_FAIL_ADHOC_C ----------------- */
+
+update_job: AE00_PCE_PRD_QE16_PQSD_DATAREF_FAIL_ADHOC_C job_type: CMD
+box_name: AE00_PCE_PRD_QE16_PQSD_DATAREF_ADHOC_B
+command: /export/home/dsadm/common/scripts/SendMail.ksh -s "FAILED\:McLaren PQSD DATAMART REFRESH" -e "PCE_PROD_SUPPORT@premierinc.com _194348@premierinc.com"
+machine: h3puprmrdseng11
+owner: dsadm@h3puprmrdseng11
+permission: gx,ge
+date_conditions: 0
+condition: f(AE00_PCE_PRD_QE16_PQSD_DATAREF_NOTIFY_ADHOC_C) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_REFRESH_ADHOC_B) | f(AE00_PCE_PRD_QE16_PQSD_DATAREF_SWAP_ADHOC_C)
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DMART_FAIL_ADHOC_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_PQSD_DMART_FAIL_ADHOC_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
+alarm_if_terminated: 1

@@ -1,0 +1,15 @@
+
+
+/* ----------------- AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C ----------------- */ 
+
+update_job: AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C   job_type: CMD 
+box_name: AE00_PCE_PRD_QE16_INTEGRATED_DMART_INTERMEDIATE_WLY_B
+command: /export/home/dsadm/common/scripts/pce_qadv_exec_customsql.ksh -h pzpceqe16 -u prmretlp -d pce_qe16_slp_prd_dm -c QE16 -f SLP/QE16_INTEGRATED_dmart_intermediate.sql
+machine: h3pudseng2
+owner: dsadm@h3pudseng2
+permission: gx,ge
+date_conditions: 0
+std_out_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.out"
+std_err_file: "/ds_data1/DI_PCE_PROD/log/AE00_PCE_PRD_QE16_INTEGRATED_DMART_REFRESH_INTERMEDIATE_WLY_C.`date +'%Y%d%m_%s'`.err"
+alarm_if_fail: 1
+profile: "/export/home/dsadm/.profile"
