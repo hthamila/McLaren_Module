@@ -696,44 +696,6 @@ GROUP BY 1,2,3,4,5,6,7
 );
 
 
-
------Robotic Surgery
---DELETE FROM pce_qe16_slp_prd_dm..intermediate_stg_dly_stat_metrics WHERE peoplesoft_acct_num IN ('Robotic Surgery');
---INSERT INTO pce_qe16_slp_prd_dm..intermediate_stg_dly_stat_metrics
---(fcy_nm, report_date_name, report_date, report_month, peoplesoft_acct_num, peoplesoft_stat_name, measure_unit, measure_value)
---(
---SELECT
---    eaf_cf.fcy_nm AS fcy_nm,
---    'Service Date' AS report_date_name,
---    eaf_cf.service_date AS report_date,
---    TO_CHAR(eaf_cf.service_date,'YYYYMM') AS report_month,
---    'Robotic Surgery' AS peoplesoft_acct_num,
---    'Robotic Surgery' AS peoplesoft_stat_name,
---    'Total Cases' AS measure_unit,
---    COUNT(DISTINCT eaf_cf.encntr_num) AS measure_value
---FROM
---    pce_qe16_slp_prd_dm..stage_svc_stat_metrics_eaf_cf eaf_cf
---    LEFT OUTER JOIN pce_qe16_slp_prd_dm..val_set_dim vsd_sc
---    ON
---        eaf_cf.persp_clncl_smy_cd = vsd_sc.cd AND
---        vsd_sc.cohrt_id = 'ROBO_SURG_SPL_SMY_CD'
---    LEFT OUTER JOIN pce_qe16_slp_prd_dm..val_set_dim vsd_cc
---    ON
---        eaf_cf.raw_chargcode = vsd_cc.cd AND
---        vsd_cc.cohrt_id = 'ROBO_SURG_CHRG_CD' AND
---        eaf_cf.fcy_num = vsd_cc.val_set_nm AND
---        UPPER(vsd_cc.cd_descr) = UPPER(eaf_cf.chargecodedesc)
---WHERE
---    eaf_cf.service_date IS NOT NULL AND
---    eaf_cf.service_date <= CURRENT_DATE AND
---    eaf_cf.fcy_nm IN ('Bay', 'Caro', 'Central', 'Flint', 'Karmanos', 'Lansing', 'Lapeer', 'Macomb', 'Northern', 'Oakland', 'Port Huron', 'St. Lukes', 'Thumb') AND
---    (
---        vsd_sc.cd IS NOT NULL OR
---        vsd_cc.cd IS NOT NULL
---    )
---GROUP BY 1,2,3,4,5,6,7
---);
-
 ---Robotic Surgery
 DELETE FROM pce_qe16_slp_prd_dm..intermediate_stg_dly_stat_metrics WHERE peoplesoft_acct_num IN ('Robotic Surgery');
 INSERT INTO pce_qe16_slp_prd_dm..intermediate_stg_dly_stat_metrics
